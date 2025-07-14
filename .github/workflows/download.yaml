@@ -10,6 +10,9 @@ on:
 jobs:
   run-script:
     runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.hw }}  # GitHub token
     
     steps:
     - name: Checkout repository
@@ -20,5 +23,5 @@ jobs:
         # 添加你的脚本执行命令
         echo "开始执行定时任务 $(date)"
         chmod +x ./download.sh  # 添加执行权限
-        ./download.sh           # 执行脚本
+        ./download.sh ${GH_TOKEN}         # 执行脚本
 
