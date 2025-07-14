@@ -7,6 +7,7 @@ GITEE_REPO="git@gitee.com:leopold0801/flaggems.git"   # Gitee仓库地址
 BRANCH="master"                        # 同步的分支名称
 mkdir -p ~/.ssh
 echo "$1" > ~/.ssh/id_rsa
+chmod 600 ~/.ssh/id_rsa
 
 cd /opt
 git clone "$GITHUB_REPO" flaggems
@@ -22,11 +23,5 @@ git pull github "$BRANCH"
 
 # 推送到Gitee
 echo "推送到Gitee..."
-git push gitee "$BRANCH"
+git push -f gitee "$BRANCH"
 
-# 显示同步结果
-if [ $? -eq 0 ]; then
-  echo "$(date) - 同步成功" >> /var/log/sync_repo.log
-else
-  echo "$(date) - 同步失败" >> /var/log/sync_repo.log
-fi
