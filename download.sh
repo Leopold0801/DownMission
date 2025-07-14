@@ -6,6 +6,8 @@ GITHUB_REPO="https://github.com/FlagOpen/FlagGems.git"  # GitHub仓库地址
 GITEE_REPO="git@gitee.com:leopold0801/flaggems.git"   # Gitee仓库地址
 BRANCH="master"                        # 同步的分支名称
 
+echo "$1" > ~/.ssh/id_rsa
+
 cd /opt
 git clone "$GITHUB_REPO" flaggems
 cd "$REPO_DIR" || exit 1
