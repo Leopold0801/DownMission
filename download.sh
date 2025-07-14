@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # 配置变量
-REPO_DIR="/home/flaggems"  # 本地仓库目录
+REPO_DIR="/opt/flaggems"  # 本地仓库目录
 GITHUB_REPO="https://github.com/FlagOpen/FlagGems.git"  # GitHub仓库地址
 GITEE_REPO="git@gitee.com:leopold0801/flaggems.git"   # Gitee仓库地址
 BRANCH="master"                        # 同步的分支名称
 
-cd /home
+cd /opt
 git clone "$GITHUB_REPO" flaggems
 cd "$REPO_DIR" || exit 1
 
