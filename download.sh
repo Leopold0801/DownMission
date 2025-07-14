@@ -25,5 +25,5 @@ git pull github "$BRANCH"
 
 # 推送到Gitee
 echo "推送到Gitee..."
-git push -f gitee "$BRANCH"
+git push -f -vvv gitee "$BRANCH"
 
