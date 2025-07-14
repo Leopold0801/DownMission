@@ -1,0 +1,24 @@
+name: Scheduled Script Runner
+
+on:
+  schedule:
+    # 每6小时运行一次 (UTC时间)
+    - cron: '0 */6 * * *'
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+        
+    - name: Run custom script
+      run: |
+        # 添加你的脚本执行命令
+        echo "开始执行定时任务 $(date)"
+        chmod +x ./download.sh  # 添加执行权限
+        ./download.sh           # 执行脚本
+
