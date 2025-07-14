@@ -8,6 +8,8 @@ BRANCH="master"                        # 同步的分支名称
 mkdir -p ~/.ssh
 echo "$1" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
+ls -l ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa
 
 cd /opt
 git clone "$GITHUB_REPO" flaggems
