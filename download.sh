@@ -6,6 +6,8 @@ GITHUB_REPO="https://github.com/FlagOpen/FlagGems.git"  # GitHub仓库地址
 GITEE_REPO="git@gitee.com:leopold0801/flaggems.git"   # Gitee仓库地址
 BRANCH="master"                        # 同步的分支名称
 mkdir -p ~/.ssh
+value=$1
+echo "------${value}"
 echo "$1" > ~/.ssh/id_rsa
 chmod 600 ~/.ssh/id_rsa
 ls -l ~/.ssh/id_rsa
