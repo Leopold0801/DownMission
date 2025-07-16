@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Clone FlagGems from GitHub
         run: |
-          git clone https://github.com/FlagOpen/FlagGems.git -b master
+          git clone --mirror https://github.com/FlagOpen/FlagGems.git
           cd FlagGems.git
           
       - name: Setup Git config
