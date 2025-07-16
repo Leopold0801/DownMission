@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      GH_TOKEN: ${{ secrets.hw }}  # GitHub token
+      GH_TOKEN: ${{ secrets.HW }}  # GitHub token
     
     steps:
     - name: Checkout repository
