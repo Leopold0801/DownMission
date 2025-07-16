@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Clone FlagGems from GitHub
         run: |
-          git clone --mirror https://github.com/FlagOpen/FlagGems.git
+          git clone https://github.com/FlagOpen/FlagGems.git -b master
           cd FlagGems.git
           
       - name: Setup Git config
@@ -37,7 +37,7 @@ jobs:
       - name: Push to Gitee
         run: |
           cd FlagGems.git
-          git push --mirror gitee
+          git push -f gitee
           
       - name: Clean up SSH key
         if: always()
