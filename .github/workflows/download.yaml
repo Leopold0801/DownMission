@@ -1,46 +1,44 @@
-name: Sync to Gitee
+name: Sync FlagGems to Gitee
 
 on:
   schedule:
-    # 每6小时同步一次 (UTC时间)
+    # 每6小时同步一次 (北京时间 UTC+8)
     - cron: '0 */6 * * *'
-  # 允许手动触发
-  workflow_dispatch:
+      timezone: 'Asia/Shanghai'
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
-  sync:
+  mirror-sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout GitHub repo
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  # 获取完整历史记录
-
-      - name: Set up Git config
+      - name: Clone FlagGems from GitHub
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@users.noreply.github.com"
-
+          git clone --mirror https://github.com/FlagOpen/FlagGems.git
+          cd FlagGems.git
+          
+      - name: Setup Git config
+        run: |
+          cd FlagGems.git
+          git config user.name "GitHub Actions"
+          git config user.email "actions@users.noreply.github.com"
+          
       - name: Add Gitee remote
         run: |
+          cd FlagGems.git
           git remote add gitee ${{ secrets.GITEE_REPO_URL }}
           
-      - name: Configure SSH for Gitee
+      - name: Setup SSH for Gitee
         run: |
           mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "${{ secrets.GITEE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.GITEE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan gitee.com >> ~/.ssh/known_hosts
           
       - name: Push to Gitee
         run: |
-          # 强制推送所有分支和标签
+          cd FlagGems.git
           git push --mirror gitee
           
-          # 或者只推送特定分支（示例）
-          # git push gitee main:main --force
-          
-      - name: Clean up
-        run: |
-          rm -f ~/.ssh/id_rsa
+      - name: Clean up SSH key
+        if: always()
+        run: rm -f ~/.ssh/id_ed25519
