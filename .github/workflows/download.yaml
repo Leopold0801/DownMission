@@ -1,27 +1,46 @@
-name: Scheduled Script Runner
+name: Sync to Gitee
 
 on:
   schedule:
-    # 每6小时运行一次 (UTC时间)
+    # 每6小时同步一次 (UTC时间)
     - cron: '0 */6 * * *'
   # 允许手动触发
   workflow_dispatch:
 
 jobs:
-  run-script:
+  sync:
     runs-on: ubuntu-latest
-
-    env:
-      GH_TOKEN: ${{ secrets.HW }}  # GitHub token
-    
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-        
-    - name: Run custom script
-      run: |
-        # 添加你的脚本执行命令
-        echo "开始执行定时任务 $(date)"
-        chmod +x ./download.sh  # 添加执行权限
-        ./download.sh "${GH_TOKEN}"         # 执行脚本
+      - name: Checkout GitHub repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史记录
 
+      - name: Set up Git config
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@users.noreply.github.com"
+
+      - name: Add Gitee remote
+        run: |
+          git remote add gitee ${{ secrets.GITEE_REPO_URL }}
+          
+      - name: Configure SSH for Gitee
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "${{ secrets.GITEE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan gitee.com >> ~/.ssh/known_hosts
+          
+      - name: Push to Gitee
+        run: |
+          # 强制推送所有分支和标签
+          git push --mirror gitee
+          
+          # 或者只推送特定分支（示例）
+          # git push gitee main:main --force
+          
+      - name: Clean up
+        run: |
+          rm -f ~/.ssh/id_rsa
